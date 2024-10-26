@@ -729,10 +729,126 @@ Usa [[ ]] para condiciones más complejas, patrones y una sintaxis más limpia.
 
 Usa [ ] para condiciones simples y cuando necesites compatibilidad con scripts más antiguos.
 
+terar sobre los elementos
+
+Si solo queres acceder a los elementos sin eliminarlos, puedes hacerlo así:
+
+for archivo in "${arreglohome[@]}"; do
+done
+
+Iterar sobre los índices
+
+Si necesitas modificar el array (por ejemplo, eliminar un elemento), usa índices:
+
+for i in "${!arreglohome[@]}"; do
+    if [[ "${arreglohome[$i]}" == "$nombre" ]]; then
+        unset arreglohome[$i]
+        break
+    fi
+done
 
 
+#!/bin/bash
 
 
+arreglohome=()
+
+
+for i in /home/Augus/*.doc; do
+	if [[ -e "$i" ]]; then
+		arreglohome+=("$(echo $i | cut -d "/" -f4)")
+	fi
+done
+
+verArchivo() {
+	local archivo_buscado=false
+	nombre=$1
+	for i in "${arreglohome[@]}"; do
+		echo "$i"
+		if [[ "$i" == "$nombre" ]]; then
+			echo "Archivo Encontrado!!!"
+			archivo_buscado=true
+			break
+		fi
+	done
+	if ! $archivo_buscado; then
+		echo "Lo sentimos, su archivo no se ha encontrado dentro del directorio"
+		return 5
+	fi
+}
+
+cantidadDeArchivos() {
+	echo "${#arreglohome[@]}"
+}
+
+borrarArchivo() {
+	nombre=$1
+	encontrado=false
+	echo "Desea eliminar el archivo logicamente?"
+	echo "1- Si"
+	echo "2- No"
+	read resultado;
+
+	if [ "$resultado" -eq 1 ]; then
+		for i in "${!arreglohome[@]}"; do
+			if [[ "${arreglohome[$i]}" == "$nombre" ]]; then
+				unset arreglohome[$i]
+				encontrado=true
+				break
+			fi
+		done
+	elif [ "$resultado" -eq 2 ]; then
+		for i in "${!arreglohome[@]}"; do
+			if [[ "${arreglohome[$i]}" == "$nombre" ]]; then
+				rm  "/home/Augus/${arreglohome[$i]}"
+				unset arreglohome[$i]
+				encontrado=true
+				break
+			fi
+		done
+	else
+		echo "elige la proxima uno de los numeros no?"
+	fi
+
+
+	if ! $encontrado; then
+		echo "El archivo $nombre no se encuentra en el directorio "
+	fi
+
+}
+
+
+verArchivo archivo_3.doc
+verArchivo archivo_2.doc
+
+cantidadDeArchivos
+
+borrarArchivo archivo_1.doc
+
+
+30)
+#!/bin/bash
+
+if [ ! -e "$HOME/bin" ]; then
+	mkdir "$HOME/bin"
+fi
+
+cantmovidos=0
+
+
+for i in ./*; do
+	if [ -f "$i" ]; then
+		mv "$i" "$HOME/bin"
+		echo "Moviendo archivo: $i"
+		((cantmovidos++))
+	fi
+done
+
+if [ "$cantmovidos" -gt 0 ]; then
+	echo "Cantidad de archivos movidos: $cantmovidos"
+else
+	echo "Ningun archivo movido"
+fi
 
 
 
