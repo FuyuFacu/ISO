@@ -1,0 +1,738 @@
+Ej 5
+ $# Me imprime la cantidad de parametros enviados
+
+$* y $? me imprime los parametros
+
+$? verificar el exito o fallo de un comando anterior
+Es común usar $? en scripts para tomar decisiones basadas en el éxito o fracaso de comandos previos.
+
+por lo tanto si [ $? -eq 0 ] significa que si la operacion anterior
+ha sido correcta.
+
+Ej6
+#!/bin/bash
+
+
+arg1=$1
+op=$2
+arg3=$3
+
+
+resultado=$(expr $arg1 $op $arg3)
+
+echo "${resultado}"
+
+Mando como parametro 234 + 83 y me toma el "+" como argumento de op y pues hice el expr y me dio todo lesgo
+
+
+ej7)
+
+El comando test en absh permite evaluar diferentes tipos de expresiones para tomar desiciones en scripts y se puede simplificiar en corchetes [] dichas evaluaciones pueden abarcar archivos, cadenas de caracteres y numeros.
+
+
+-e : Comprueba si un archivo existe
+test -e archivo.txt o [-e archivo.txt]
+
+-f : Si existe un archivo regular (no directorio)
+test -f archivo.txt
+
+-d : comprueba si existe un directorio
+
+[ -d carpeta/ ]
+
+-r : comprueba que el archivo sea legible
+[ -r archivo.txt ]
+
+-w comprueba si el archivo es escribible
+[ -w script.sh ]
+
+-x comprueba si el archivo es ejecutable
+[ -x script.sh ]
+
+-L comprueba si el archivo es un enlace simbolico
+
+test -L enlace
+
+## Evaluacion de cadenas de caracteres
+
+-z Comprueba si la longitud de una cadena es cero
+[ -z "$cadena" ]
+
+-n Comprueba si la longitud de una cadena es distinta a cero
+[ -n $cadena ]
+
+= o == comprueba si dos cadenas son iguales
+
+[ "$cadena" == "$cadena2" ]
+
+!= Comprueba si dos cadenas son diferentes
+
+[ "$cadena1" != "$cadena2" ]
+
+Evaluacion numerica ya la ase
+
+-eq igual 
+-ne no igual
+-lt menor que
+-le menor o igual que
+-gt mayor que
+-ge mayor o igual que
+
+
+8-
+ya investigadas de manera exhaustiva
+
+9- 
+las sentencias break lo que hacen es salir del bucle en cuestion
+y el continue lo que hace directamente es saltear el resto del cuerpo del bucle en la iteracion actual y continuar con la siguiente iteracion
+
+10-
+
+variables numericas, de cadena, variables de entorno y arreglos
+
+bash no es un lenguaje de tipado fuerte, es uno debil y dinamico.
+
+en Bash se pueden definir arreglos de la siguiente forma
+
+arreglo1=(fede rodrigo dalmata) se deja espacio por cada item del arreglo, en este caso tenemos 3.
+
+
+11-
+Si, se pueden definir
+se definen de esta manera:
+
+funcionejemplo() {
+
+
+}
+
+y adentro poner lo que quieras que haga dicho programa, hasta puede recibir parametros si gusta
+
+por ejemplo para que la funcion reciba arreglos simplemente tiene que invocar dicha funcion y asignarle parametros tal como lo hace antes de ejecutur el programa main
+
+funcionejemplo arg1 arg2
+
+12-
+Usa $(( ... )) cuando necesites obtener el resultado de una operación aritmética.
+Usa (( ... )) cuando quieras evaluar condiciones aritméticas sin necesidad de un resultado específico.
+
+
+#!/bin/bash
+
+echo "Porfavor, ingrese 2 numeros"
+read num1
+echo "Falta otro"
+read num2
+
+multiplicacion=$((num1 * num2))
+suma=$((num1 + num2))
+resta=$((num1 - num2))
+
+
+echo "$multiplicacion"
+echo "$suma"
+echo "$resta"
+
+if [ "$num1" -gt "$num2" ]; then
+ echo "Numero mayor es el: ${num1}"
+elif [ "$num2" -gt "$num1" ]; then
+ echo "Numero mayor es el: ${num2}"
+else
+ echo "los dos son iguales kjjj"
+fi
+
+b-
+#!/bin/bash
+
+num1=$1
+num2=$2
+
+multiplicacion=$((num1 * num2))
+suma=$((num1 + num2))
+resta=$((num1 - num2))
+
+
+echo "Multiplcacion: $multiplicacion"
+echo "Suma: $suma"
+echo "resta: $resta"
+
+if [ "$num1" -gt "$num2" ]; then
+ echo "Numero mayor es el: ${num1}"
+elif [ "$num2" -gt "$num1" ]; then
+ echo "Numero mayor es el: ${num2}"
+else
+ echo "los dos son iguales kjjj"
+fi
+
+c-
+Recordar esto:
+El uso de $(()) en Bash es para realizar operaciones aritméticas. Cuando quieres sumar, restar, multiplicar o hacer otra operación matemática con variables, $(()) evalúa la expresión y devuelve el resultado.
+
+Dentro de $(()): Al usar $(()), Bash ya sabe que estás realizando una operación aritmética y trata las variables como números. Por lo tanto, solo escribes el nombre de la variable, como num1 y num2, sin el $.
+
+#!/bin/bash
+
+
+# como los numeros y la operacion se leen por parametro pues esto no sirve
+# echo "Ingrese un numero"
+# read num1
+# echo "Ingrese un segundo numero"
+# read num2
+# echo "Por ultimo ingrese la operacion que desea hacer"
+# read operacion
+
+num1=$1
+operacion=$2
+num2=$3
+
+
+case "$operacion" in
+ "+")
+	echo "Resultado: $((num1 + num2))"
+ ;; 
+ "-")
+	echo "Resultado: $((num1 - num2))"
+ ;;
+ "*")
+	echo "Resultado: $((num1 * num2))"
+ ;;
+ "%")
+	echo "Resultado: $((num1 % num2))"
+ ;;
+ *)
+	echo "Eres pendejo?"
+ ;;
+esac
+
+13)
+
+a)
+#!/bin/bash
+
+
+for ((i=1; i<=100; i++))
+do
+ echo "$i"
+done
+
+b)
+#!/bin/bash
+
+
+echo "Elige una de las tres opciones"
+echo "1: Listar"
+echo "2: Donde estoy LMAO"
+echo "3: Quien esta"
+read respuesta;
+
+
+case $respuesta in
+
+ 1)
+ 	ls
+ ;;
+
+ 2)
+	pwd
+ ;;
+ 3)
+	who
+ ;;
+ *)
+	echo "Bruh u stupid?"
+esac
+
+c)
+#!/bin/bash
+
+nombre=$1
+
+if [ -e "$nombre" ]; then
+	if [ -f "$nombre" ]; then
+		echo "El archivo es un archivo xd"
+	elif [ -d "$nombre" ]; then
+		echo "El archivo es un directorio"
+	fi
+else
+	echo "Como no existe un archivo/directorio que tenga como nombre "$nombre""
+	echo "Entonces creamos un directorio de ese archivo/directorio"
+	mkdir "$nombre"
+
+fi
+
+
+14)
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+	echo "Ingrese parametros la proxima pdejo"
+	exit 1
+fi
+
+if [ ! -d $1 ]; then
+	echo "No seleccionaste bien un parametro"
+	exit 1
+
+fi
+
+
+directorio_nombres=$(ls -h $1)
+
+
+case $2 in
+	"-a")
+		for arg in $directorio_nombres; do
+			mv "$1/$arg" "$1/$arg$3"
+			echo "Se ha puesto al final el nombre"
+		done
+	;;
+	"-b")
+		for arg in $directorio_nombres; do
+			mv "$1/$arg" "$1/$3$arg"
+			echo "Se ha puesto el nombre al principio"
+		done
+	;;
+	*)
+		echo "Error de parametros"
+		exit 1
+	;;
+esac
+
+
+15)
+
+Parámetros Comunes de cut
+
+    -f (fields): Especifica los campos que se desean extraer. Se utiliza junto con -d.
+        Ejemplo: Para extraer el primer y tercer campo de un archivo delimitado por comas:
+
+        bash
+
+    cut -d ',' -f 1,3 archivo.csv
+
+-d (delimiter): Define el delimitador que separa los campos. Por defecto, el delimitador es la tabulación.
+
+    Ejemplo: Para usar un espacio como delimitador:
+
+    bash
+
+    cut -d ' ' -f 2 archivo.txt
+
+-c (characters): Extrae caracteres específicos de cada línea en lugar de campos.
+
+    Ejemplo: Para extraer los primeros 5 caracteres de cada línea:
+
+    bash
+
+    cut -c 1-5 archivo.txt
+
+-s (suppress): Suprime las líneas que no contienen el delimitador. Útil para evitar líneas vacías en la salida.
+
+    Ejemplo: Para suprimir líneas que no contienen comas:
+
+    bash
+
+    cut -d ',' -f 1 -s archivo.csv
+
+--complement: Devuelve los campos que no se especificaron.
+
+    Ejemplo: Para obtener todos los campos excepto el segundo:
+
+    bash
+
+    cut -d ',' -f 2 --complement archivo.csv
+
+-n: Utilizado con -c, evita cortar por medio de caracteres multibyte. No es tan común en uso general.
+
+
+16)
+#!/bin/bash
+
+if [ $# -eq 1 ]; then
+	ext=$1
+	usuarios=$(cut -d: -f1 /etc/passwd)
+	echo  "$usuarios"
+	for use in $usuarios; do
+		home_dir="/home/$use"
+		if [ -d "$home_dir" ]; then
+			count=$(find "$home_dir" -name "*.$ext" | wc -l)
+			if [ $count -ge 0 ]; then
+				echo  "usuario: $use. Cantidad de archivos con esa extension: $count" 
+			fi
+		fi
+	done
+else
+	echo "dame una extension antes lol"
+fi
+
+17)
+#!/bin/bash
+
+for file in *; do
+        if [ -f "$file" ]; then
+                nombre_modificado=$(echo "$file" | tr -d 'aA' | tr '[:upper:][:lower:]' '[:lower:][:upper:]')
+                echo "$nombre_modificado"
+        fi
+done
+
+18)
+
+#!/bin/bash
+
+while ! who | grep "$1"; do
+        echo "Esperando que el usuario este conectado.."
+        sleep 10
+done
+
+echo "Usuario $1 logueado en el sistema"
+
+Sin corchetes: Usa el resultado de un comando (como ping o who) directamente.
+Con corchetes: Evalua condiciones que no provienen de un comando, como comparaciones o verificaciones.
+
+19)
+#!/bin/bash
+
+while true; do
+
+	echo "-------MENU INTERACTIVO--------"
+	for i in {1..18}; do
+		echo "$i, Ejercicio $i"
+	done
+	echo "Presiona 0 si quiere salir"
+	echo "Selecciona una de las opciones"
+
+	read opcion
+
+	if [ "$opcion" -eq "0" ]; then
+		echo "Saliendo del menu"
+		break
+	fi
+
+
+	if [[ "$opcion" -lt 19  &&  "$opcion" -gt 0 ]]; then
+		./ejercicio"$opcion"
+
+	else
+		echo "Opcion invalida, intentalo de nuevo"
+	fi
+done
+
+20)
+#!/bin/bash
+
+pila=()
+
+push() {
+ local variable=$1
+ pila+=("$variable")
+
+}
+
+pop() {
+ local longitud=${pila[@]}
+ unset pila[(($longitud-1))]
+}
+
+lenght() {
+ local longitud = ${pila[@]}
+ echo "La longitud de la pila es de $longitud"
+}
+
+print() {
+ echo "${pila[@]}"
+
+}
+
+
+21)
+#!/bin/bash
+
+pila=()
+
+longitud=${#pila[@]}
+
+
+push() {
+ local variable=$1
+ pila+=("$variable")
+ ((longitud++))
+
+}
+
+pop() {
+ if [ $longitud -gt 0 ]; then
+	local pos=$((longitud-1))
+ 	unset pila[$pos]
+ 	((longitud--))
+ fi
+}
+
+length() {
+  echo "La longitud de la pila es de $longitud"
+}
+
+print() {
+ echo "${pila[@]}"
+}
+
+
+push "hola"
+push "otro"
+push 3elemento
+push 4elemento
+push 5elemento
+push 6elemento
+push 7elemento
+push 8elemento
+push 9elemento
+push 10elemento
+pop
+
+length
+
+
+while true; do
+	echo "Desea printear toda la lista?"
+	echo "1-Si"
+	echo "2-No"
+	read resultado;
+	case $resultado in 
+		"1")
+			print
+		;;
+		"2")
+		exit 1
+		;;
+		*)
+			echo "Elige una opcion bien pendejo"
+		;;
+	esac
+done
+
+
+22)
+
+#!/bin/bash
+
+num=(10 3 5 7 9 3 5 4)
+suma=1
+productoria() {
+  for i in ${num[@]}; do
+	suma=$((suma * i))
+  done
+}
+
+productoria
+
+echo "$suma"
+
+23)
+#!/bin/bash
+
+num=(10 3 5 6 8 7 10 12 45 30 20)
+
+par=0
+impar=0
+
+for i in "${num[@]}"; do
+	if ((i % 2 == 0)); then
+		((par++))
+	else
+		((impar++))
+	fi
+done
+
+echo "Cantidad de pares: $par"
+echo "Cantidad de Impares: $impar"
+
+24)
+#!/bin/bash
+
+num1=(234 53 14 5 1 63 74)
+num2=(24 76 53 273 73 784 74)
+
+longitud1="${#num1[@]}"
+longitud2="${#num2[@]}"
+
+lengthGeneral=0
+
+if [ $longitud1 -ge $longitud2 ]; then
+	lengthGeneral=$longitud2
+else
+	lengthGeneral=$longitud1
+fi
+
+
+for ((i=0; i<$lengthGeneral; i++)); do
+	n1=${num1[$i]}
+	n2=${num2[$i]}
+	echo "La suma de los elementos de la posicion $i de los vectores es: $((n1+n2)) "
+done
+
+25)
+Con el simbolo ^ en una expresion regular indica inicio de linea.
+en el comando grep "^users:" /etc/group
+
+#!/bin/bash
+
+usuarios=( $(grep "^users" /etc/group | cut -d: -f4))
+
+while getopts ":bli" casos; do
+	case $casos in
+		b)
+			length="${#usuarios[@]}"
+			if [ $((length-1)) -ge $2  ] && [ $2 -ge 0 ]; then
+				echo "${usuarios[$2]}"
+			else
+				echo "el numero pasado por parametro esta fuera del rango del arreglo"
+			fi
+		;;
+		l)
+			echo "${#usuarios[@]}"
+		;;
+		i)
+			echo "${usuarios[@]}"
+		;;
+		*)
+			echo "Opcion invalida, se cierra el programa..."
+			exit 1
+		;;
+	esac
+done
+
+26)
+${!i} es un uso de la expasion indirecta de variables en Bash
+cuando utilizas ! antes de una variable, le estas diciendo a Bash
+que quieres el valor de la variable cuyo nombre eswo el contenido de i.
+Si i es 0, ${!i} se expandira a ${0}
+
+#!/bin/bash
+
+
+if [ $# -eq 0 ]; then
+	echo "Al menos pasa un parametro no?"
+	exit 1
+fi
+
+echo $#
+
+archivosInexistentes=0
+
+for ((i=1; i<=$#; i++)); do
+	if [ $((i%2)) -ne 0 ]; then
+		ruta=${!i}
+		if [ -d "$ruta" ]; then
+			echo "Felicidades, el directorio se encuentra disponible"
+		elif [ -f "$ruta" ]; then
+			echo "Felicidades, el archivo se encuentra disponible"
+		else
+			((archivosInexistentes++))
+		fi
+	fi
+done
+
+echo "archivos/directorios inexistentes: $archivosInexistentes"
+
+
+27)
+Resumen de Usos
+
+Sin comillas: Útil cuando no esperas que haya espacios o caracteres especiales, pero puede llevar a errores si los hay.
+Con comillas dobles: Debes usar esto siempre que manejes variables que puedan contener espacios, para asegurarte de que el contenido se preserve como una sola cadena.
+Con comillas simples: Útil para cadenas literales donde no deseas que Bash evalúe variables o caracteres especiales.
+
+Usa {} cuando necesites clarificar el nombre de una variable o cuando trabajes con arreglos.
+Usa " cuando desees expandir variables y preservar espacios.
+Usa '' cuando quieras tratar el contenido como texto literal.
+
+Usa vector[$1] para acceder al elemento en la posición $1.
+Usa ${vector[$1]} si quieres clarificar el acceso, especialmente si estás concatenando texto o utilizando dentro de cadenas más largas.
+
+#!/bin/bash
+
+inicializar() {
+	vector=()
+}
+
+agregar_elem() {
+	vector+=("$1")
+}
+
+eliminar_elem() {
+	length=${#vector[@]}
+	if [ $((length-1)) -ge $1 ] && [ $1 -ge 0 ]; then
+		unset "vector[$1]"
+	else
+		echo "El valor recibido por parametro no coindice dentro de la dimension del arreglo"
+	fi
+}
+
+longitud() {
+	echo "${#vector[@]}"
+}
+
+imprimir() {
+	echo "${vector[@]}"
+}
+
+inicializar_Con_Valores() {
+	diml=$1
+	valor=$2
+	vector=()
+	for ((i=0; i<=$diml; i++)); do
+		vector[$i]="$valor"
+	done
+}
+
+inicializar_Con_Valores 20 12
+eliminar_elem 25
+eliminar_elem 3
+eliminar_elem 15
+imprimir
+
+imprimir
+
+28)
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+	echo "Al menos pasa un parametro no?"
+	exit 1
+fi
+
+cantArchivos=()
+
+
+directorio=$1
+
+if [ -d "$directorio" ]; then
+	for i in "$directorio"/*; do
+		if [ -f "$i" ] && [ -r "$i" ] && [ -w "$i" ]; then
+			cantArchivos+=("$i")
+		fi
+	done
+
+else
+	echo "Directorio inexistente, cerrando programa"
+	exit 4
+fi
+
+
+
+echo "Archivos encontrados: ${#cantArchivos[@]}"
+
+
+29)
+Para comprobar si el archivo tiene una extensión .doc, puedes usar la sintaxis de patrones con [[ ]], que permite el uso de comodines.
+
+Usa [[ ]] para condiciones más complejas, patrones y una sintaxis más limpia.
+
+Usa [ ] para condiciones simples y cuando necesites compatibilidad con scripts más antiguos.
+
+
+
+
+
+
+
+
