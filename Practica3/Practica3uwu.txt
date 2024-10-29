@@ -27,7 +27,7 @@ Mando como parametro 234 + 83 y me toma el "+" como argumento de op y pues hice 
 
 ej7)
 
-El comando test en absh permite evaluar diferentes tipos de expresiones para tomar desiciones en scripts y se puede simplificiar en corchetes [] dichas evaluaciones pueden abarcar archivos, cadenas de caracteres y numeros.
+El comando test en absh permite evaluar diferentes tipos de expresiones para tomar decisiones en scripts y se puede simplificiar en corchetes [] dichas evaluaciones pueden abarcar archivos, cadenas de caracteres y numeros.
 
 
 -e : Comprueba si un archivo existe
